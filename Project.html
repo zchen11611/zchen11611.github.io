@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  
+  <title>Final Project- Face recognition_live detection | </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <meta name="description" content="Final Project- Face recognition_live detection 1.IntroductionThe well-known Alipay (Chinese payment platform) uses face++ services to realize face recognition. In actual projects, iFLYTEK’s face recog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Final Project- Face recognition_live detection">
+<meta property="og:url" content="https://zchen11611.github.io/Project.html">
+<meta property="og:site_name">
+<meta property="og:description" content="Final Project- Face recognition_live detection 1.IntroductionThe well-known Alipay (Chinese payment platform) uses face++ services to realize face recognition. In actual projects, iFLYTEK’s face recog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zchen11611.github.io/images/face.jpg">
+<meta property="article:published_time" content="2020-12-13T13:19:00.000Z">
+<meta property="article:modified_time" content="2020-12-13T13:19:06.000Z">
+<meta property="article:author" content="Zhi Chen">
+<meta property="article:tag" content="一网盟,yiwangmeng,GoodHexo,hexo便携版">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zchen11611.github.io/images/face.jpg">
+
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml" />
+  
+
+  
+  <!--[if lte IE 10 ]><link rel="shortcut icon" href="/images/favicon.ico"><![endif]-->
+  <!--[if !IE]><!-->
+  <link rel="shortcut icon" href="/images/favicon.png">
+
+  <meta name="msapplication-TileImage" content="/images/favicon.png"/>
+  <meta name="msapplication-TileColor" content="#000000"/>
+
+  <link rel="apple-touch-icon" href="/images/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144x144.png" />
+
+  <link rel="icon" sizes="256x256" href="/images/favicon.png" />
+  <!--<![endif]-->
+  
+
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro|Material+Icons|Raleway:400,300,700" rel="stylesheet" type="text/css" />
+
+  
+<link rel="stylesheet" href="/css/vendors.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+
+  
+<script src="/js/vendors.js"></script>
+
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es5,es6,es7,fetch,Object.entries,Object.values&flags=gated"></script>
+
+  <script>
+    define('jquery', function () {
+      return window.jQuery;
+    });
+  </script>
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+<body>
+
+  <div class="navbar-fixed">
+  <nav id="main-navbar" class="grey lighten-5 z-depth-0" role="navigation">
+    <div class="nav-wrapper container">
+
+      <a id="logo-container" href="/" class="brand-logo center-align">
+        <span></span>
+        <sub></sub>
+      </a>
+
+      <ul class="right hide-on-med-and-down">
+        
+          <li>
+            <a class="main-nav-link" href="https://zchen11611.github.io/index.html">Home</a>
+          </li>
+        
+          <li>
+            <a class="main-nav-link" href="/Project.html">Project</a>
+          </li>
+        
+          <li>
+            <a class="main-nav-link" href="/Weekly_Reports.html">Weekly Reports</a>
+          </li>
+        
+          <li>
+            <a class="main-nav-link" target="_blank" rel="noopener" href="https://github.com/zchen11611/EE629">myGithub</a>
+          </li>
+        
+      </ul>
+
+      <a href="#" data-target="nav-mobile" class="button-collapse sidenav-trigger">
+        <i class="material-icons">menu</i>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<ul id="nav-mobile" class="sidenav">
+  
+  <li>
+    <a class="main-nav-link" href="https://zchen11611.github.io/index.html">Home</a>
+  </li>
+  
+  <li>
+    <a class="main-nav-link" href="/Project.html">Project</a>
+  </li>
+  
+  <li>
+    <a class="main-nav-link" href="/Weekly_Reports.html">Weekly Reports</a>
+  </li>
+  
+  <li>
+    <a class="main-nav-link" target="_blank" rel="noopener" href="https://github.com/zchen11611/EE629">myGithub</a>
+  </li>
+  
+</ul>
+
+
+  <div id="main-container">
+    
+<div class="container">
+  <div class="row">
+    <div class="col s12">
+
+
+      <article id="post-Project" class="article article-type-post" itemscope itemprop="blogPost">
+
+        <div class="article-inner">
+          
+
+          <header class="article-header">
+          
+              
+  
+    <h1 class="article-title header" itemprop="name">
+      Final Project- Face recognition_live detection
+    </h1>
+  
+
+
+          
+
+            <div class="article-meta">
+              <i class="fa fa-calendar"></i>
+              <time datetime="2020-12-13T13:19:00.000Z" itemprop="datePublished">12月 13, 2020</time>
+            </div>
+          </header>
+
+
+          <div class="article-entry " itemprop="articleBody">
+            
+              <h2 id="Final-Project-Face-recognition-live-detection"><a href="#Final-Project-Face-recognition-live-detection" class="headerlink" title="Final Project- Face recognition_live detection"></a>Final Project- Face recognition_live detection</h2><p><img src="/images/face.jpg" alt="a"></p>
+<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1.Introduction"></a>1.Introduction</h3><p>The well-known Alipay (Chinese payment platform) uses face++ services to realize face recognition. In actual projects, iFLYTEK’s face recognition SDK is used for secondary packaging to achieve live recognition.<br>In actual use, many apps have implemented fingerprint login, gesture login, third-party login, and face-swiping login in order to ensure the safety of users. In addition to the regular account and password login, I will Share how the project realizes the live detection of face recognition, which is the most basic implementation for realizing face recognition login.</p>
+<h3 id="2-Project-realization-ideas"><a href="#2-Project-realization-ideas" class="headerlink" title="2.Project realization ideas"></a>2.Project realization ideas</h3><ol>
+<li>Click the recognition button to call the camera</li>
+<li>CameraRules class, detect camera permissions</li>
+<li>Initialize page, create camera page, create mouth data and head shaking data</li>
+<li>Turn on recognition, face frame recognition</li>
+<li>Face recognition, face recognition determines whether a face is detected</li>
+<li>After detecting the face, determine the location</li>
+<li>The position is judged right, judge whether to open the mouth</li>
+<li>Open your mouth to judge, verify whether you shake your head</li>
+<li>Shake your head to judge the completion, 3 seconds countdown to take pictures</li>
+<li>After taking the picture, choose to retake or upload the picture</li>
+<li>Select retake and repeat steps 5-9, select upload to recall the image data</li>
+<li>Data clean</li>
+</ol>
+<h3 id="3-Source-code"><a href="#3-Source-code" class="headerlink" title="3.Source code"></a>3.Source code</h3><p><strong>Click the recognition button to call the camera</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>([CameraRules isCapturePermissionGranted])&#123;</span><br><span class="line">        [self setDeviceAuthorized:YES];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            NSString* info=@<span class="string">&quot;No camera permission&quot;</span></span><br><span class="line">            [self showAlert:info];</span><br><span class="line">            [self setDeviceAuthorized:NO];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>CameraRules class, detect camera permissions</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Detect camera permissions</span></span><br><span class="line">+(BOOL)isCapturePermissionGranted&#123;</span><br><span class="line">    <span class="keyword">if</span>([AVCaptureDevice respondsToSelector:<span class="meta">@selector(authorizationStatusForMediaType:)</span>])&#123;</span><br><span class="line">        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];</span><br><span class="line">        <span class="keyword">if</span>(authStatus ==AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied)&#123;</span><br><span class="line">            <span class="keyword">return</span> NO;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(authStatus==AVAuthorizationStatusNotDetermined)&#123;</span><br><span class="line">            dispatch_semaphore_t sema = dispatch_semaphore_create(<span class="number">0</span>);</span><br><span class="line">            __block BOOL isGranted=YES;</span><br><span class="line">            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) &#123;</span><br><span class="line">                isGranted=granted;</span><br><span class="line">                dispatch_semaphore_signal(sema);</span><br><span class="line">            &#125;];</span><br><span class="line">            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);</span><br><span class="line">            <span class="keyword">return</span> isGranted;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Initialize page, create camera page, create mouth data and head shaking data</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Create camera page, create mouth opening data and head shaking data</span></span><br><span class="line">   [self faceUI];</span><br><span class="line">   [self faceCamera];</span><br><span class="line">   [self faceNumber];</span><br></pre></td></tr></table></figure>
+
+<p><strong>Turn on recognition, face frame recognition</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> cx = (left+right)/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">float</span> cy = (top + bottom)/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">float</span> w = right - left;</span><br><span class="line"><span class="keyword">float</span> h = bottom - top;</span><br><span class="line"><span class="keyword">float</span> ncx = cy ;</span><br><span class="line"><span class="keyword">float</span> ncy = cx ;</span><br><span class="line"></span><br><span class="line">CGRect rectFace = CGRectMake(ncx-w/<span class="number">2</span> ,ncy-w/<span class="number">2</span> , w, h);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!isFrontCamera)&#123;</span><br><span class="line">    rectFace=rSwap(rectFace);</span><br><span class="line">    rectFace=rRotate90(rectFace, faceImg.height, faceImg.width);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BOOL isNotLocation = [self identifyYourFaceLeft:left right:right top:top bottom:bottom];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isNotLocation==YES) &#123;</span><br><span class="line">    <span class="keyword">return</span> nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Face recognition, face recognition determines whether a face is detected</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(id key in keys)&#123;</span><br><span class="line">    id attr=[landmarkDic objectForKey:key];</span><br><span class="line">    if(attr &amp;&amp; [attr isKindOfClass:[NSDictionary class]])&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(!isFrontCamera)&#123;</span><br><span class="line">            p=pSwap(p);</span><br><span class="line">            p=pRotate90(p, faceImg.height, faceImg.width);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isCrossBorder == YES) &#123;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">            <span class="keyword">return</span> nil;</span><br><span class="line">        &#125;</span><br><span class="line">        p=pScale(p, widthScaleBy, heightScaleBy);</span><br><span class="line">        </span><br><span class="line">        [arrStrPoints addObject:NSStringFromCGPoint(p)];</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>After detecting the face, determine the location</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (right - left &lt; <span class="number">230</span> || bottom - top &lt; <span class="number">250</span>) &#123;</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;too far&quot;</span>;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    isCrossBorder = YES;</span><br><span class="line">    <span class="keyword">return</span> YES;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (right - left &gt; <span class="number">320</span> || bottom - top &gt; <span class="number">320</span>) &#123;</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;too close&quot;</span>;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    isCrossBorder = YES;</span><br><span class="line">    <span class="keyword">return</span> YES;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isJudgeMouth != YES) &#123;</span><br><span class="line">        self.textLabel.text = @<span class="string">&quot;Please repeat opening mouth&quot;</span>;</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;openMouth&quot;</span> count:<span class="number">2</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (left &lt; <span class="number">100</span> || top &lt; <span class="number">100</span> || right &gt; <span class="number">460</span> || bottom &gt; <span class="number">400</span>) &#123;</span><br><span class="line">            isCrossBorder = YES;</span><br><span class="line">            isJudgeMouth = NO;</span><br><span class="line">            self.textLabel.text = @<span class="string">&quot;Please adjust the position first&quot;</span>;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">            <span class="keyword">return</span> YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (isJudgeMouth == YES &amp;&amp; isShakeHead != YES) &#123;</span><br><span class="line">        self.textLabel.text = @<span class="string">&quot;Please repeat shaking your head&quot;</span>;</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;shakeHead&quot;</span> count:<span class="number">4</span>];</span><br><span class="line">        number = <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        takePhotoNumber += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (takePhotoNumber == <span class="number">2</span>) &#123;</span><br><span class="line">            [self timeBegin];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    isCrossBorder = NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>The position is judged right, judge whether to open the mouth</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (rightX &amp;&amp; leftX &amp;&amp; upperY &amp;&amp; lowerY &amp;&amp; isJudgeMouth != YES) &#123;</span><br><span class="line">    </span><br><span class="line">    number ++;</span><br><span class="line">    <span class="keyword">if</span> (number == <span class="number">1</span> || number == <span class="number">300</span> || number == <span class="number">600</span> || number ==<span class="number">900</span>) &#123;</span><br><span class="line">        mouthWidthF = rightX - leftX &lt; <span class="number">0</span> ? abs(rightX - leftX) : rightX - leftX;</span><br><span class="line">        mouthHeightF = lowerY - upperY &lt; <span class="number">0</span> ? abs(lowerY - upperY) : lowerY - upperY;</span><br><span class="line">        NSLog(@<span class="string">&quot;%d,%d&quot;</span>,mouthWidthF,mouthHeightF);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (number &gt; <span class="number">1200</span>) &#123;</span><br><span class="line">        [self delateNumber];</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;openMouth&quot;</span> count:<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mouthWidth = rightX - leftX &lt; <span class="number">0</span> ? abs(rightX - leftX) : rightX - leftX;</span><br><span class="line">    mouthHeight = lowerY - upperY &lt; <span class="number">0</span> ? abs(lowerY - upperY) : lowerY - upperY;</span><br><span class="line">    NSLog(@<span class="string">&quot;%d,%d&quot;</span>,mouthWidth,mouthHeight);</span><br><span class="line">    NSLog(@<span class="string">&quot;Before opening your mouth：width=%d，height=%d&quot;</span>,mouthWidthF - mouthWidth,mouthHeight - mouthHeightF);</span><br><span class="line">    <span class="keyword">if</span> (mouthWidth &amp;&amp; mouthWidthF) &#123;</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">if</span> (mouthHeight - mouthHeightF &gt;= <span class="number">20</span> &amp;&amp; mouthWidthF - mouthWidth &gt;= <span class="number">15</span>) &#123;</span><br><span class="line">            isJudgeMouth = YES;</span><br><span class="line">            imgView.animationImages = nil;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Open your mouth to judge, verify whether you shake your head</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ([key isEqualToString:@<span class="string">&quot;mouth_middle&quot;</span>] &amp;&amp; isJudgeMouth == YES) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (bigNumber == <span class="number">0</span> ) &#123;</span><br><span class="line">            firstNumber = p.x;</span><br><span class="line">            bigNumber = p.x;</span><br><span class="line">            smallNumber = p.x;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (p.x &gt; bigNumber) &#123;</span><br><span class="line">            bigNumber = p.x;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (p.x &lt; smallNumber) &#123;</span><br><span class="line">            smallNumber = p.x;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">if</span> (bigNumber - smallNumber &gt; <span class="number">60</span>) &#123;</span><br><span class="line">            isShakeHead = YES;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Shake your head to judge the completion, 3 seconds countdown to take pictures</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(timeCount &gt;= <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        self.textLabel.text = [NSString  stringWithFormat:@<span class="string">&quot;%ld s后拍照&quot;</span>,(<span class="keyword">long</span>)timeCount];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        [theTimer invalidate];</span><br><span class="line">        theTimer=nil;</span><br><span class="line">        </span><br><span class="line">        [self didClickTakePhoto];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>After taking the picture, choose to retake or upload the picture</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)didClickPhotoAgain</span><br><span class="line">&#123;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    </span><br><span class="line">    [self.previewLayer.session startRunning];</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;Pls adjust your position&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    [backView removeFromSuperview];</span><br><span class="line">    </span><br><span class="line">    isJudgeMouth = NO;</span><br><span class="line">    isShakeHead = NO;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Select retake and repeat steps 5-9, select upload to recall the image data</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)didClickUpPhoto</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//successfully upload theimage</span></span><br><span class="line">    [self.faceDelegate sendFaceImage:imageView.image];</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Data clean</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)delateNumber</span><br><span class="line">&#123;</span><br><span class="line">    number = <span class="number">0</span>;</span><br><span class="line">    takePhotoNumber = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    mouthWidthF = <span class="number">0</span>;</span><br><span class="line">    mouthHeightF = <span class="number">0</span>;</span><br><span class="line">    mouthWidth = <span class="number">0</span>;</span><br><span class="line">    mouthHeight = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    smallNumber = <span class="number">0</span>;</span><br><span class="line">    bigNumber = <span class="number">0</span>;</span><br><span class="line">    firstNumber = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    imgView.animationImages = nil;</span><br><span class="line">    imgView.image = [UIImage imageNamed:@<span class="string">&quot;shakeHead0&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-SDK-download"><a href="#4-SDK-download" class="headerlink" title="4.SDK download"></a>4.SDK download</h3><p>Because the Xunfei face recognition SDK is used in the project, you need to go to the Xunfei open platform to create an application and download the SDK</p>
+<h3 id="5-add-SDK-to-the-demo"><a href="#5-add-SDK-to-the-demo" class="headerlink" title="5.add SDK to the demo"></a>5.add SDK to the demo</h3><ul>
+<li>Download the demo and import the FBYFaceData folder in the demo into the project.</li>
+<li>Introduce FBYFaceRecognitionViewController in the project</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;FBYFaceRecognitionViewController.h&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Add code to the click event of the item recognition button</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)pushToFaceStreamDetectorVC</span><br><span class="line">&#123;</span><br><span class="line">    FBYFaceRecognitionViewController *faceVC = [[FBYFaceRecognitionViewController alloc]init];</span><br><span class="line">    faceVC.faceDelegate = self;</span><br><span class="line">    [self.navigationController pushViewController:faceVC animated:YES];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            
+          </div>
+
+          
+
+          <footer class="article-footer">
+            <a data-url="https://zchen11611.github.io/Project.html" data-id="ckioalww70000a9n5awtt75w4" class="article-share-link">Share</a>
+            
+            
+          </footer>
+
+        </div>
+
+        
+          
+<nav id="article-nav" class="white">
+  <div class="nav-wrapper">
+    <ul class="row">
+    
+      <li class="col s6">
+        <a href="/index.html" id="article-nav-newer" class="article-nav-link-wrap grey-text text-darken-1 truncate">
+          <i class="fa fa-arrow-left"></i>
+          <span class="article-nav-title">WELCOME TO My Page</span>
+        </a>
+      </li>
+    
+
+    
+      <li class="col s6">
+        <a href="/Weekly_Reports.html" id="article-nav-older" class="article-nav-link-wrap grey-text text-darken-1 right-align truncate">
+          <span class="article-nav-title">WEEKLY REPORTS</span>
+          <i class="fa fa-arrow-right"></i>
+        </a>
+      </li>
+    
+
+    </ul>
+  </div>
+</nav>
+
+
+        
+      </article>
+
+
+      
+
+
+
+    </div>
+  </div>
+</div>
+
+
+  
+
+
+
+  </div>
+
+  <footer class="page-footer grey darken-2">
+    <div class="footer-copyright">
+      <div class="container">
+        &copy; 2020 Zhi Chen
+
+        <div class="right">
+          Powered by <a href="http://hexo.io/" rel="nofollow noopener noreferrer" class="white-text" target="_blank">Hexo</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  
+<script src="/js/app.js"></script>
+
+
+</body>
+</html>

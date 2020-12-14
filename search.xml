@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Final Project- Face recognition_live detection</title>
+    <url>/Project.html</url>
+    <content><![CDATA[<h2 id="Final-Project-Face-recognition-live-detection"><a href="#Final-Project-Face-recognition-live-detection" class="headerlink" title="Final Project- Face recognition_live detection"></a>Final Project- Face recognition_live detection</h2><p><img src="/images/face.jpg" alt="a"></p>
+<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1.Introduction"></a>1.Introduction</h3><p>The well-known Alipay (Chinese payment platform) uses face++ services to realize face recognition. In actual projects, iFLYTEK’s face recognition SDK is used for secondary packaging to achieve live recognition.<br>In actual use, many apps have implemented fingerprint login, gesture login, third-party login, and face-swiping login in order to ensure the safety of users. In addition to the regular account and password login, I will Share how the project realizes the live detection of face recognition, which is the most basic implementation for realizing face recognition login.</p>
+<h3 id="2-Project-realization-ideas"><a href="#2-Project-realization-ideas" class="headerlink" title="2.Project realization ideas"></a>2.Project realization ideas</h3><ol>
+<li>Click the recognition button to call the camera</li>
+<li>CameraRules class, detect camera permissions</li>
+<li>Initialize page, create camera page, create mouth data and head shaking data</li>
+<li>Turn on recognition, face frame recognition</li>
+<li>Face recognition, face recognition determines whether a face is detected</li>
+<li>After detecting the face, determine the location</li>
+<li>The position is judged right, judge whether to open the mouth</li>
+<li>Open your mouth to judge, verify whether you shake your head</li>
+<li>Shake your head to judge the completion, 3 seconds countdown to take pictures</li>
+<li>After taking the picture, choose to retake or upload the picture</li>
+<li>Select retake and repeat steps 5-9, select upload to recall the image data</li>
+<li>Data clean</li>
+</ol>
+<h3 id="3-Source-code"><a href="#3-Source-code" class="headerlink" title="3.Source code"></a>3.Source code</h3><p><strong>Click the recognition button to call the camera</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>([CameraRules isCapturePermissionGranted])&#123;</span><br><span class="line">        [self setDeviceAuthorized:YES];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            NSString* info=@<span class="string">&quot;No camera permission&quot;</span></span><br><span class="line">            [self showAlert:info];</span><br><span class="line">            [self setDeviceAuthorized:NO];</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>CameraRules class, detect camera permissions</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Detect camera permissions</span></span><br><span class="line">+(BOOL)isCapturePermissionGranted&#123;</span><br><span class="line">    <span class="keyword">if</span>([AVCaptureDevice respondsToSelector:<span class="meta">@selector(authorizationStatusForMediaType:)</span>])&#123;</span><br><span class="line">        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];</span><br><span class="line">        <span class="keyword">if</span>(authStatus ==AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied)&#123;</span><br><span class="line">            <span class="keyword">return</span> NO;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(authStatus==AVAuthorizationStatusNotDetermined)&#123;</span><br><span class="line">            dispatch_semaphore_t sema = dispatch_semaphore_create(<span class="number">0</span>);</span><br><span class="line">            __block BOOL isGranted=YES;</span><br><span class="line">            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) &#123;</span><br><span class="line">                isGranted=granted;</span><br><span class="line">                dispatch_semaphore_signal(sema);</span><br><span class="line">            &#125;];</span><br><span class="line">            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);</span><br><span class="line">            <span class="keyword">return</span> isGranted;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> YES;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Initialize page, create camera page, create mouth data and head shaking data</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Create camera page, create mouth opening data and head shaking data</span></span><br><span class="line">   [self faceUI];</span><br><span class="line">   [self faceCamera];</span><br><span class="line">   [self faceNumber];</span><br></pre></td></tr></table></figure>
+
+<p><strong>Turn on recognition, face frame recognition</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">float</span> cx = (left+right)/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">float</span> cy = (top + bottom)/<span class="number">2</span>;</span><br><span class="line"><span class="keyword">float</span> w = right - left;</span><br><span class="line"><span class="keyword">float</span> h = bottom - top;</span><br><span class="line"><span class="keyword">float</span> ncx = cy ;</span><br><span class="line"><span class="keyword">float</span> ncy = cx ;</span><br><span class="line"></span><br><span class="line">CGRect rectFace = CGRectMake(ncx-w/<span class="number">2</span> ,ncy-w/<span class="number">2</span> , w, h);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(!isFrontCamera)&#123;</span><br><span class="line">    rectFace=rSwap(rectFace);</span><br><span class="line">    rectFace=rRotate90(rectFace, faceImg.height, faceImg.width);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BOOL isNotLocation = [self identifyYourFaceLeft:left right:right top:top bottom:bottom];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isNotLocation==YES) &#123;</span><br><span class="line">    <span class="keyword">return</span> nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Face recognition, face recognition determines whether a face is detected</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(id key in keys)&#123;</span><br><span class="line">    id attr=[landmarkDic objectForKey:key];</span><br><span class="line">    if(attr &amp;&amp; [attr isKindOfClass:[NSDictionary class]])&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(!isFrontCamera)&#123;</span><br><span class="line">            p=pSwap(p);</span><br><span class="line">            p=pRotate90(p, faceImg.height, faceImg.width);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isCrossBorder == YES) &#123;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">            <span class="keyword">return</span> nil;</span><br><span class="line">        &#125;</span><br><span class="line">        p=pScale(p, widthScaleBy, heightScaleBy);</span><br><span class="line">        </span><br><span class="line">        [arrStrPoints addObject:NSStringFromCGPoint(p)];</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>After detecting the face, determine the location</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (right - left &lt; <span class="number">230</span> || bottom - top &lt; <span class="number">250</span>) &#123;</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;too far&quot;</span>;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    isCrossBorder = YES;</span><br><span class="line">    <span class="keyword">return</span> YES;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">if</span> (right - left &gt; <span class="number">320</span> || bottom - top &gt; <span class="number">320</span>) &#123;</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;too close&quot;</span>;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    isCrossBorder = YES;</span><br><span class="line">    <span class="keyword">return</span> YES;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isJudgeMouth != YES) &#123;</span><br><span class="line">        self.textLabel.text = @<span class="string">&quot;Please repeat opening mouth&quot;</span>;</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;openMouth&quot;</span> count:<span class="number">2</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (left &lt; <span class="number">100</span> || top &lt; <span class="number">100</span> || right &gt; <span class="number">460</span> || bottom &gt; <span class="number">400</span>) &#123;</span><br><span class="line">            isCrossBorder = YES;</span><br><span class="line">            isJudgeMouth = NO;</span><br><span class="line">            self.textLabel.text = @<span class="string">&quot;Please adjust the position first&quot;</span>;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">            <span class="keyword">return</span> YES;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (isJudgeMouth == YES &amp;&amp; isShakeHead != YES) &#123;</span><br><span class="line">        self.textLabel.text = @<span class="string">&quot;Please repeat shaking your head&quot;</span>;</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;shakeHead&quot;</span> count:<span class="number">4</span>];</span><br><span class="line">        number = <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        takePhotoNumber += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (takePhotoNumber == <span class="number">2</span>) &#123;</span><br><span class="line">            [self timeBegin];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    isCrossBorder = NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>The position is judged right, judge whether to open the mouth</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (rightX &amp;&amp; leftX &amp;&amp; upperY &amp;&amp; lowerY &amp;&amp; isJudgeMouth != YES) &#123;</span><br><span class="line">    </span><br><span class="line">    number ++;</span><br><span class="line">    <span class="keyword">if</span> (number == <span class="number">1</span> || number == <span class="number">300</span> || number == <span class="number">600</span> || number ==<span class="number">900</span>) &#123;</span><br><span class="line">        mouthWidthF = rightX - leftX &lt; <span class="number">0</span> ? abs(rightX - leftX) : rightX - leftX;</span><br><span class="line">        mouthHeightF = lowerY - upperY &lt; <span class="number">0</span> ? abs(lowerY - upperY) : lowerY - upperY;</span><br><span class="line">        NSLog(@<span class="string">&quot;%d,%d&quot;</span>,mouthWidthF,mouthHeightF);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (number &gt; <span class="number">1200</span>) &#123;</span><br><span class="line">        [self delateNumber];</span><br><span class="line">        [self tomAnimationWithName:@<span class="string">&quot;openMouth&quot;</span> count:<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    mouthWidth = rightX - leftX &lt; <span class="number">0</span> ? abs(rightX - leftX) : rightX - leftX;</span><br><span class="line">    mouthHeight = lowerY - upperY &lt; <span class="number">0</span> ? abs(lowerY - upperY) : lowerY - upperY;</span><br><span class="line">    NSLog(@<span class="string">&quot;%d,%d&quot;</span>,mouthWidth,mouthHeight);</span><br><span class="line">    NSLog(@<span class="string">&quot;Before opening your mouth：width=%d，height=%d&quot;</span>,mouthWidthF - mouthWidth,mouthHeight - mouthHeightF);</span><br><span class="line">    <span class="keyword">if</span> (mouthWidth &amp;&amp; mouthWidthF) &#123;</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">if</span> (mouthHeight - mouthHeightF &gt;= <span class="number">20</span> &amp;&amp; mouthWidthF - mouthWidth &gt;= <span class="number">15</span>) &#123;</span><br><span class="line">            isJudgeMouth = YES;</span><br><span class="line">            imgView.animationImages = nil;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Open your mouth to judge, verify whether you shake your head</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ([key isEqualToString:@<span class="string">&quot;mouth_middle&quot;</span>] &amp;&amp; isJudgeMouth == YES) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (bigNumber == <span class="number">0</span> ) &#123;</span><br><span class="line">            firstNumber = p.x;</span><br><span class="line">            bigNumber = p.x;</span><br><span class="line">            smallNumber = p.x;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (p.x &gt; bigNumber) &#123;</span><br><span class="line">            bigNumber = p.x;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> (p.x &lt; smallNumber) &#123;</span><br><span class="line">            smallNumber = p.x;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">if</span> (bigNumber - smallNumber &gt; <span class="number">60</span>) &#123;</span><br><span class="line">            isShakeHead = YES;</span><br><span class="line">            [self delateNumber];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Shake your head to judge the completion, 3 seconds countdown to take pictures</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(timeCount &gt;= <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        self.textLabel.text = [NSString  stringWithFormat:@<span class="string">&quot;%ld s后拍照&quot;</span>,(<span class="keyword">long</span>)timeCount];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        [theTimer invalidate];</span><br><span class="line">        theTimer=nil;</span><br><span class="line">        </span><br><span class="line">        [self didClickTakePhoto];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>After taking the picture, choose to retake or upload the picture</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)didClickPhotoAgain</span><br><span class="line">&#123;</span><br><span class="line">    [self delateNumber];</span><br><span class="line">    </span><br><span class="line">    [self.previewLayer.session startRunning];</span><br><span class="line">    self.textLabel.text = @<span class="string">&quot;Pls adjust your position&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    [backView removeFromSuperview];</span><br><span class="line">    </span><br><span class="line">    isJudgeMouth = NO;</span><br><span class="line">    isShakeHead = NO;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Select retake and repeat steps 5-9, select upload to recall the image data</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)didClickUpPhoto</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//successfully upload theimage</span></span><br><span class="line">    [self.faceDelegate sendFaceImage:imageView.image];</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Data clean</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)delateNumber</span><br><span class="line">&#123;</span><br><span class="line">    number = <span class="number">0</span>;</span><br><span class="line">    takePhotoNumber = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    mouthWidthF = <span class="number">0</span>;</span><br><span class="line">    mouthHeightF = <span class="number">0</span>;</span><br><span class="line">    mouthWidth = <span class="number">0</span>;</span><br><span class="line">    mouthHeight = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    smallNumber = <span class="number">0</span>;</span><br><span class="line">    bigNumber = <span class="number">0</span>;</span><br><span class="line">    firstNumber = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    imgView.animationImages = nil;</span><br><span class="line">    imgView.image = [UIImage imageNamed:@<span class="string">&quot;shakeHead0&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-SDK-download"><a href="#4-SDK-download" class="headerlink" title="4.SDK download"></a>4.SDK download</h3><p>Because the Xunfei face recognition SDK is used in the project, you need to go to the Xunfei open platform to create an application and download the SDK</p>
+<h3 id="5-add-SDK-to-the-demo"><a href="#5-add-SDK-to-the-demo" class="headerlink" title="5.add SDK to the demo"></a>5.add SDK to the demo</h3><ul>
+<li>Download the demo and import the FBYFaceData folder in the demo into the project.</li>
+<li>Introduce FBYFaceRecognitionViewController in the project</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">#import &quot;FBYFaceRecognitionViewController.h&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Add code to the click event of the item recognition button</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)pushToFaceStreamDetectorVC</span><br><span class="line">&#123;</span><br><span class="line">    FBYFaceRecognitionViewController *faceVC = [[FBYFaceRecognitionViewController alloc]init];</span><br><span class="line">    faceVC.faceDelegate = self;</span><br><span class="line">    [self.navigationController pushViewController:faceVC animated:YES];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>WEEKLY REPORTS</title>
+    <url>/Weekly_Reports.html</url>
+    <content><![CDATA[<h2 id="WEEKLY-REPORTS"><a href="#WEEKLY-REPORTS" class="headerlink" title="WEEKLY REPORTS"></a>WEEKLY REPORTS</h2><h3 id="Week-13-15"><a href="#Week-13-15" class="headerlink" title="Week 13-15:"></a>Week 13-15:</h3><ul>
+<li>continue on my final project: Select retake and repeat steps 5-9, select upload to recall the image data</li>
+<li>make the data clean</li>
+<li>Updated my blob site by adding this week report, and fixing the bugs of the final project.</li>
+<li>Committed the changes to GitHub</li>
+</ul>
+<h3 id="Week-12"><a href="#Week-12" class="headerlink" title="Week 12:"></a>Week 12:</h3><ul>
+<li><p>Uploded the code on GitHub, and updated the GitHub link accordingly</p>
+</li>
+<li><p>Collect the data collection of image and install the SDK </p>
+</li>
+<li><p>Attended the online lecture and study Lesson10:</p>
+<ul>
+<li>Python programming is a common thread through IoT native services, web services, data analysis, and system management</li>
+<li>IoT communication models<ul>
+<li>Request-response — Django REST framework, Flask, <em>etc</em>.</li>
+<li>Publish-subscribe — Crossbar.io, Paho, <em>etc</em>.</li>
+</ul>
+</li>
+<li>IoT cloud platforms — ThingSpeak, Particle Cloud, <em>etc</em>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="Week-11"><a href="#Week-11" class="headerlink" title="Week 11:"></a>Week 11:</h3><ul>
+<li>Watched the recording of lesson’s 9 lecture. Plus, I read and studied lesson 9 slides and lab.</li>
+<li>About Lesson9:<ul>
+<li>NETCONF protocol and YANG data modeling language provide advanced capabilities of automating IoT system configuration and management</li>
+<li>Pyang validates and converts YANG modules to various formats such as YIN</li>
+<li>Netopeer is a set of NETCONF tools built on the Libnetconf library</li>
+<li>Ncclient is a Python library that facilitates client-side scripting and application development around the NETCONF protocol</li>
+<li>Cloud native computing, service mesh, and blockchain drive continuous innovation in IoT systems and services</li>
+</ul>
+</li>
+<li>Choose a title for my project </li>
+</ul>
+<h3 id="Week-10"><a href="#Week-10" class="headerlink" title="Week 10:"></a>Week 10:</h3><ul>
+<li>Watched the recording of lesson’s 8 lecture and I studied lesson 8 slides and lab.</li>
+</ul>
+<h3 id="Week-9"><a href="#Week-9" class="headerlink" title="Week 9:"></a>Week 9:</h3><ul>
+<li>Watched the recording of lesson’s 7 lecture and I studied lesson 7 slides and lab</li>
+<li>Reviewed the content of the slide.</li>
+<li>About lesson7:<ul>
+<li>Several PaaS providers offer cloud storage and analytics</li>
+<li>Google Sheets Requires OAuth 2.0 credentials in JavaScript Object Notation (JSON) and in the same directory as the Python code to open the spreadsheet and append rows</li>
+</ul>
+</li>
+<li>Reviewed the material from Github and started doing Lab6</li>
+</ul>
+<h3 id="Week-8"><a href="#Week-8" class="headerlink" title="Week 8:"></a>Week 8:</h3><ul>
+<li>Watched the recording of lesson’s 6 lecture and I studied lesson 6 slides and lab</li>
+<li>I reviewed Python 2 and 3 </li>
+<li>About lesson6: Alternative Devices<ul>
+<li>A number of IoT development boards support Ethernet, USB development interface, or Linux OS,</li>
+<li>Form factors vary from 36mm x 20mm to 127mm x 79mm</li>
+<li>Some include Wi-Fi — few support enterprise Wi-Fi</li>
+<li>Some have eMMC memory on board</li>
+<li>Those without HDMI rely on USB development interface</li>
+</ul>
+</li>
+</ul>
+<h3 id="Week-6-7"><a href="#Week-6-7" class="headerlink" title="Week 6-7:"></a>Week 6-7:</h3><ul>
+<li>Watched the recording of lesson’s 5 lecture and I studied lesson 5 slides and lab</li>
+<li>review the report of other students</li>
+</ul>
+<h3 id="Week-5"><a href="#Week-5" class="headerlink" title="Week 5:"></a>Week 5:</h3><ul>
+<li>I studied Lesson 4 materials and lab, and implemented what I learned about Flask on another cource to present the data on a web page. </li>
+</ul>
+<h3 id="Week-4"><a href="#Week-4" class="headerlink" title="Week 4:"></a>Week 4:</h3><ul>
+<li>Watched the recording of lesson’s 3 lecture and I studied lesson 3 slides and lab</li>
+<li>About the Lesson3: Python<ul>
+<li>Python is an interpreted, high-level and general-purpose programming language<ul>
+<li>Data structure, flow control, functions, modules, classes, files, date, time, coordinates, and send email</li>
+</ul>
+</li>
+<li>Anaconda</li>
+<li>To speed up execution, Python interpreter automatically converts source code (.py) once to byte code (.pyc) with the same file name in the same directory </li>
+<li>Use IDE or text editor to create and edit source code</li>
+<li>Run secure copy (scp) on laptop to transfer files to and from  Raspberry Pi</li>
+</ul>
+</li>
+<li>I started doing lab3. I found my Raspberry Pi could use the Python 2.7.16 which had been downloaded in my laptop automatically. </li>
+</ul>
+<h3 id="Week-3"><a href="#Week-3" class="headerlink" title="Week 3:"></a>Week 3:</h3><ul>
+<li>Reviewed the content of the slide. I spent several days to learn Python</li>
+<li>About the lesson2L: Raspberry Pi <ul>
+<li>The Raspberry Pi is a low cost, credit-card sized computer that plugs into a computer monitor or TV, and uses a standard keyboard and mouse</li>
+<li>An SD card inserted into the slot on the board acts as the hard drive for the Raspberry Pi. It is powered by USB and the video output can be hooked up to a traditional RCA TV set, a more modern monitor, or even a TV using the HDMI port</li>
+<li>Two commonly encountered problems with Raspberry Pi</li>
+<li>Raspberry Pi serial has two mutually exclusive uses</li>
+<li>Always double-check GPIO numbering and wiring to avoid damaging Raspberry Pi</li>
+</ul>
+</li>
+</ul>
+<h3 id="Week-1-2"><a href="#Week-1-2" class="headerlink" title="Week 1-2:"></a>Week 1-2:</h3><ul>
+<li>Watched the recording of lesson’s  lecture and I studied lesson slides(Lesson0-1)</li>
+<li>I made the GitHub repository for 629 and prepared the basic knowledge framework like Python</li>
+<li>I finished Lab1and installed Raspberry Pi on VMware Workstation 15. The operating system is Debian 7.x. Then I made some changes in Raspberry Pi Configuration.</li>
+<li>During Lab02, I learned how to use virtual Raspberry Pi to run circuit, since I used the virtual machine to run Raspberry Pi.</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>WELCOME TO My Page</title>
+    <url>/index.html</url>
+    <content><![CDATA[<p><img src="/images/IoT-Device-Attacks.jpg" alt="a"><br>Hi, I’m Zhi Chen. </p>
+<p>This webpage I will share my weekly reports, course project and any other contributions. All can be accessed using the top navigation menu:</p>
+<p>The weekly reports page will be about my weekly work on the Internet of Things course (EE-629) and I will record the content of my weekly study.</p>
+<p>The GitHub page will have a link to access my repository.</p>
+<p>My project will be an ios demo based on object-c(swift) called Face recognition_live detection. </p>
+<p>Labs: could not get my hand on a Raspberry Pi, therefore, I tried to study it manually which helped me understand how to handle it, and hopefully, in coming days I will buy one as I have plans to implement some ideas with it.</p>
+<p>Project: can be found on Project page with the code.</p>
+]]></content>
+  </entry>
+</search>
